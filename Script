@@ -1,0 +1,54 @@
+#!/bin/bash
+target=$1
+wayback(){
+echo -e $red"[+]"$end "Wayback Archive"$end
+echo -e ">> \e[36mWaybackurl \e[0m is in progress"
+mkdir waybackdata
+    cat $target | waybackurls > waybackdata/waybackurls.txt
+    grep -vE "robots.txt$|robots.txt\/$|.gif|.jpg|.jpeg|.css|.tiff|.ico|.png|.svg|.ttf|.woff|.woff2|.eot|.pdf|.js" waybackdata/waybackurls.txt > waybackdata/clean_wbu.txt
+    sort -u waybackdata/clean_wbu.txt > waybackdata/sort_clean_wbu.txt
+    cat waybackdata/sort_clean_wbu.txt | unew -combine > waybackdata/tmp_wbu.txt
+    cat waybackdata/tmp_wbu.txt | grep -a "?" > waybackdata/final_wbu.txt
+    cat waybackdata/final_wbu.txt | wurl -c 500 -s 200 -o waybackdata/waybackurls.txt
+    rm -f waybackdata/{wbu.txt,clean_wbu.txt,sort_clean_wbu.txt,tmp_wbu.txt,final_wbu.txt}
+cat waybackdata/waybackurls.txt | sort -u | unfurl --unique keys > waybackdata/paramlist.txt
+echo -e "[$right]"$bold"unfurl unique $end $green keys $end $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep -P "\w+\.js(\?|$)" | sort -u >waybackdata/jsurls.txt
+echo -e "[$right]"$bold"JS$end-${green}URLs${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep -P "\w+\.php(\?|$)" | sort -u >waybackdata/phpurls.txt
+echo -e "[$right]"$bold"PHP$end-${green}URLs${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep -P "\w+\.aspx(\?|$)" | sort -u >waybackdata/aspxurls.txt
+echo -e "[$right]"$bold"ASPX$end-${green}URLs${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep -P "\w+\.jsp(\?|$)" | sort -u >waybackdata/jspurls.txt
+echo -e "[$right]"$bold"JSP$end-${green}URLs${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep url= >waybackdata/open_url.txt
+echo -e "[$right]"$bold"Open$end-${green}URL${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep redirect= >waybackdata/open_redirect.txt
+echo -e "[$right]"$bold"Open$end-${green}redirect${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep dest= >waybackdata/open_dest.txt
+echo -e "[$right]"$bold"Open$end-${green}dest${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep path= >waybackdata/open_path.txt
+echo -e "[$right]"$bold"Open$end-${green}path${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep data= >waybackdata/open_data.txt
+echo -e "[$right]"$bold"Open$end-${green}data${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep domain= >waybackdata/open_domain.txt
+echo -e "[$right]"$bold"Open$end-${green}domain${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep site= >waybackdata/open_site.txt
+echo -e "[$right]"$bold"Open$end-${green}site${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep dir= >waybackdata/open_dir.txt
+echo -e "[$right]"$bold"Open$end-${green}dir${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep document= >waybackdata/document.txt
+echo -e "[$right]"$bold"URLs$end-${green}document${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep root= >waybackdata/open_root.txt
+echo -e "[$right]"$bold"Open$end-${green}root${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep path= >waybackdata/open_path.txt
+echo -e "[$right]"$bold"Open$end-${green}path${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep folder= >waybackdata/open_folder.txt
+echo -e "[$right]"$bold"Open$end-${green}folder${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep port= >waybackdata/open_port.txt
+echo -e "[$right]"$bold"Open$end-${green}port${end} $bold done."$end
+cat waybackdata/waybackurls.txt | sort -u | grep result= >waybackdata/open_result.txt
+echo -e "[$right]"$bold"Open$end-${green}result${end} $bold done."$end
+find waybackdata/ -type f -size 0 -delete
+}
+wayback
