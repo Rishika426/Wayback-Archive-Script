@@ -1,4 +1,5 @@
 #!/bin/bash
+# Wayback Archive Script by Rishika Agarwal
 target=$1
 wayback(){
 echo -e $red"[+]"$end "Wayback Archive"$end
